@@ -55,3 +55,16 @@ socket_t os_socket_accept(socket_t sock) {
     }
     return client_fd;
 }
+
+int os_socket_recv(socket_t sock, char *buffer, int buffer_size) {
+    ssize_t bytes_lidos = recv(sock, buffer, buffer_size - 1, 0);
+
+    if (bytes_lidos > 0) {
+    buffer[bytes_lidos] = '\0'; // Finaliza a string corretamente;
+    printf("Recebido (%zd bytes): %s\n", bytes_lidos, buffer);
+    } else if (bytes_lidos == 0) {
+        printf("O cliente desconectou.\n");
+    } else {
+        perror("Erro ao receber dados no recv");
+    }
+}
