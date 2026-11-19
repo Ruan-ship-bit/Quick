@@ -13,7 +13,7 @@ socket_t os_socket_create() {
     int server = socket(AF_INET, SOCK_STREAM, 0);
     if(server < 0) {
         perror("Erro ao Criar Socket");
-        return EXIT_FAILURE;
+        return -1;
     }
     return server;
 }
@@ -29,7 +29,7 @@ int os_socket_bind(socket_t sock, int port) {
     if(ouvidor < 0) {
         perror("Erro");
         close(sock);
-        return EXIT_FAILURE;
+        return -1;
     }
     return ouvidor;
 }
@@ -37,7 +37,7 @@ int os_socket_listen(socket_t sock, int backlog) {
     if (listen(sock, backlog) < 0) {
         perror("Erro no listen");
         close(sock);
-        return EXIT_FAILURE;
+        return -1;
     }
     printf("Aguardando conexões na porta 8080...\n");
     return EXIT_SUCCESS;
@@ -51,7 +51,7 @@ socket_t os_socket_accept(socket_t sock) {
     if (client_fd < 0) {
         perror("Erro no accept");
         close(sock);
-        return EXIT_FAILURE;
+        return -1;
     }
     return client_fd;
 }
@@ -62,13 +62,13 @@ int os_socket_recv(socket_t sock, char *buffer, int buffer_size) {
     if (bytes_lidos > 0) {
         buffer[bytes_lidos] = '\0'; // Finaliza a string corretamente;
         printf("Recebido (%zd bytes): %s\n", bytes_lidos, buffer);
-        return EXIT_SUCCESS;
+        return (int)bytes_lidos;
     } else if (bytes_lidos == 0) {
         printf("O cliente desconectou.\n");
-        return EXIT_FAILURE;
+        return (int)bytes_lidos;
     } else {
         perror("Erro ao receber dados no recv");
-        return EXIT_FAILURE;
+        return -1;
     }
 }
 
@@ -76,10 +76,10 @@ int os_socket_send(socket_t sock, const char *data, int data_size) {
     ssize_t bytes_enviados = send(sock, data, data_size, 0);
     if( bytes_enviados >= 0) {
         printf("Foram enviados %zd bytes.\n", bytes_enviados);
-        return EXIT_SUCCESS;
+        return (int) bytes_enviados;
     } else {
         perror("Erro ao enviar a mensagem");
-        return EXIT_FAILURE;
+        return -1;
     }
 }
 
