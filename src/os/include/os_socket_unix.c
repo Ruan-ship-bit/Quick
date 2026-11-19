@@ -42,3 +42,16 @@ int os_socket_listen(socket_t sock, int backlog) {
     printf("Aguardando conexões na porta 8080...\n");
     return EXIT_SUCCESS;
 }
+
+socket_t os_socket_accept(socket_t sock) {
+    struct sockaddr_in client_addr;
+    socklen_t client_len = sizeof(client_addr);
+
+    socket_t client_fd = accept(sock, (struct sockaddr *)&client_addr, &client_len);
+    if (client_fd < 0) {
+        perror("Erro no accept");
+        close(sock);
+        return EXIT_FAILURE;
+    }
+    return client_fd;
+}
