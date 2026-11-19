@@ -82,3 +82,7 @@ int os_socket_send(socket_t sock, const char *data, int data_size) {
         return EXIT_FAILURE;
     }
 }
+
+void os_socket_close(socket_t sock) {
+    close(sock);
+}
