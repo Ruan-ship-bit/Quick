@@ -3,4 +3,5 @@
 *.a        
 *.so       
 *.exe      
-build/     
+build/  
+tests/   
