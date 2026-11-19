@@ -71,3 +71,14 @@ int os_socket_recv(socket_t sock, char *buffer, int buffer_size) {
         return EXIT_FAILURE;
     }
 }
+
+int os_socket_send(socket_t sock, const char *data, int data_size) {
+    ssize_t bytes_enviados = send(sock, data, data_size, 0);
+    if( bytes_enviados >= 0) {
+        printf("Foram enviados %zd bytes.\n", bytes_enviados);
+        return EXIT_SUCCESS;
+    } else {
+        perror("Erro ao enviar a mensagem");
+        return EXIT_FAILURE;
+    }
+}
